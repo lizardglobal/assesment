@@ -9,13 +9,17 @@ import ReactDOM from 'react-dom';
 import './mock';
 
 // Include styles.
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle';
 import './styles/index.css';
 
 // Include application component.
+import Header from './components/Header';
 import App from './components/App';
 
 ReactDOM.render(
   <React.StrictMode>
+    <Header />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
