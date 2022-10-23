@@ -1,5 +1,16 @@
+import { APIContextProvider } from "../API/APIContext";
+import CategorySelector from "./CategorySelector/CategorySelector";
+import Page from "./Page/Page";
+
 function App() {
-  return <div>{/* Complete the exercise here. */}</div>;
+  return (
+    <>
+    <APIContextProvider>
+      <CategorySelector />
+      <Page />
+    </APIContextProvider>
+    </>
+  );
 }
 
 export default App;
