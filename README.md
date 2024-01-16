@@ -36,12 +36,12 @@ Finally, the use of third party libraries and/or components is permitted - and i
 
 These are the minimum requirements for the exercies:
 
-1. Retrieve the data from the mock API.
-1. Output the data in a list, including properties from the data that are appropriate for a list view.
-1. Implement a category filter - this can be single or multi-select.
-1. Implement pagination - this can be traditional numbered pages or "load more".
-1. Use semantic markup where possible.
-1. Create a responsive layout with HTML and CSS.
+1. Retrieve the data from the mock API. [DONE]
+1. Output the data in a list, including properties from the data that are appropriate for a list view. [DONE]
+1. Implement a category filter - this can be single or multi-select. [DONE]
+1. Implement pagination - this can be traditional numbered pages or "load more". [DONE]
+1. Use semantic markup where possible. [DONE]
+1. Create a responsive layout with HTML and CSS. [PENDING]
 
 ### Additional Exercises
 
