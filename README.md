@@ -34,5 +34,9 @@ In order to run the provided solution the following software will need to be ins
 2. **Rendering Posts**
    - Modified the component to render the `posts` data in a `<ul>` list. Each post is displayed with its title and, if available, `author.name`. Used `.map()` to iterate over the `posts` array and create a list item `<li>` for each post. Included conditional rendering for the `author` property to manage posts with or without an author.
 
+3. **Category Filtering Implementation**
+   - Added state variables for `selectedCategories` and `filteredPosts`. Implemented filtering logic in a new `useEffect` hook to filter posts based on selected categories. The `handleCategoryChange` function updates the selected categories based on user input from the filter UI. The filtering effect updates the `filteredPosts` state to only include posts that match the selected categories.
+   - Category Filter UI : Implemented a category filter UI that displays a list of checkboxes corresponding to the categories of the posts. Users can select or deselect categories to filter the posts. The UI updates dynamically based on the categories available in the fetched data.
+
 # Authors 
 * **GOUADFEL Rayan** _alias_ [@AirG213](https://github.com/AirG213)
