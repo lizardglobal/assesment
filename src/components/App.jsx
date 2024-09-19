@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  // State declaration to store post data and loading state
+// State declaration to store posts, loading state, selected categories, and filtered posts
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); // Add state for loading
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  
+  // Handle changes in category selection by adding/removing categories from the state
+  const handleCategoryChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedCategories((prevSelected) => [...prevSelected, value]);
+    } else {
+      setSelectedCategories((prevSelected) =>
+        prevSelected.filter((category) => category !== value)
+      );
+    }
+  };
 
-  // useEffect is used to execute the query when the component is mounted
+// useEffect to fetch posts from API and set posts and loading state
   useEffect(() => {
     // Make a request to the API to retrieve data from posts
     fetch('/api/posts')
@@ -31,26 +45,65 @@ function App() {
       });
   }, []); 
 
+  // useEffect to filter posts based on selected categories and update filteredPosts
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
+      setFilteredPosts(posts); // Show all posts if no category is selected
+    } else {
+      const filtered = posts.filter((post) =>
+        post.categories.some((category) =>
+          selectedCategories.includes(category.name)
+        )
+      );
+      setFilteredPosts(filtered);
+    }
+  }, [selectedCategories, posts]); // Trigger this effect when selectedCategories or posts change
+
+  console.log(filteredPosts);
   // Log post data to check content in console
   console.log(posts);
 
   return (
     <div>
-      {/* Render a list of posts if posts data is available */}
+      <div>
+        <label>Filter by Category:</label>
+        {posts.length > 0 && (
+          <>
+            {Array.from(
+              new Set(
+                posts.reduce((categories, post) => {
+                  post.categories.forEach((category) => {
+                    categories.add(category.name);
+                  });
+                  return categories;
+                }, new Set())
+              )
+            ).map((categoryName) => (
+              <div key={categoryName}>
+                <input
+                  type="checkbox"
+                  value={categoryName}
+                  checked={selectedCategories.includes(categoryName)}
+                  onChange={handleCategoryChange}
+                />
+                <label>{categoryName}</label>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
       <ul>
         {loading ? (
-          // Show a loading message while data is being fetched
-          <p>Loading posts...</p> 
+          <p>Loading posts...</p>
         ) : (
-          posts.length > 0 ? (
-            posts.map((data) => (
+          filteredPosts.length > 0 ? (
+            filteredPosts.map((data) => (
               <li key={data.id}>
-                <h2>{data.title}</h2> {/* Display the post title */}
-                {data.author && <p>{data.author.name}</p>} {/* Display author name if available */}
+                <h2>{data.title}</h2>
+                {data.author && <p>{data.author.name}</p>}
               </li>
             ))
           ) : (
-            // Show a message if no posts are available
             <p>No posts available</p>
           )
         )}
