@@ -28,9 +28,11 @@ In order to run the provided solution the following software will need to be ins
 
 ### Changes Made
 
-1. Implemented data fetching from the mock API endpoint `/api/posts` using `fetch` within the `useEffect` hook. Added `useState` to create a state variable `posts` to store the fetched data. This handles asynchronous data retrieval and updates the component state.
+1. **Data Fetching and Loading State**
+   - Implemented data fetching from the mock API endpoint `/api/posts` using `fetch` within the `useEffect` hook. Added `useState` to create a state variable `posts` to store the fetched data and `loading` to manage the loading state. This handles asynchronous data retrieval and updates the component state. The component now displays a "Loading posts..." message when data is being fetched and renders the posts list only when the data is fully loaded.
 
-2. Modified the component to render the `posts` data in a `<ul>` list. Each post is displayed with its title and, if available, `author.name`. Used `.map()` to iterate over the `posts` array and create a list item `<li>` for each post. Included conditional rendering for the `author` property to manage posts with or without an author.
+2. **Rendering Posts**
+   - Modified the component to render the `posts` data in a `<ul>` list. Each post is displayed with its title and, if available, `author.name`. Used `.map()` to iterate over the `posts` array and create a list item `<li>` for each post. Included conditional rendering for the `author` property to manage posts with or without an author.
 
 # Authors 
 * **GOUADFEL Rayan** _alias_ [@AirG213](https://github.com/AirG213)
