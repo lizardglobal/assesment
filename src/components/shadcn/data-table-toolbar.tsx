@@ -7,7 +7,7 @@ import { DataTableViewOptions } from './data-table-view-options';
 
 import React from 'react';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
-import { categories } from '@/lib/categories';
+import useCategories from '../../hooks/use-categories';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -17,6 +17,7 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const categories = useCategories();
 
   return (
     <div className="flex items-center justify-between">

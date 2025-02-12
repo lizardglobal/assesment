@@ -9,9 +9,9 @@ import { Post } from '@/lib/schema';
 import { ArrowLeftIcon } from 'lucide-react';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { formatDate } from './home';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { formatDate } from '@/hooks/use-posts';
 
 function Detail() {
   const location = useLocation();

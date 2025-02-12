@@ -73,12 +73,12 @@ export function DataTable<TData extends { id: string | number }, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  // Animation
   const tableRef = useRef(null);
   const [isAnimating, setIsAnimating] = useState(true);
 
   useEffect(() => {
-    setIsAnimating(true); // Déclenche l'animation au début du chargement
-
+    setIsAnimating(true);
     gsap.fromTo(
       tableRef.current,
       { opacity: 0, y: 50 },
@@ -87,7 +87,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
         y: 0,
         duration: 0.8,
         ease: 'power3.out',
-        onComplete: () => setIsAnimating(false), // Fin de l'animation
+        onComplete: () => setIsAnimating(false),
       }
     );
   }, [isLoading]);
@@ -114,13 +114,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
       <DataTableToolbar table={table} />
       <div
         ref={tableRef}
-        className="border-border border-1 rounded-md overflow-auto [&::-webkit-scrollbar]:w-2
-  [&::-webkit-scrollbar-track]:rounded-full
-  [&::-webkit-scrollbar-track]:bg-gray-100
-  [&::-webkit-scrollbar-thumb]:rounded-full
-  [&::-webkit-scrollbar-thumb]:bg-gray-300
-  dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+        className="border-border border-1 rounded-md overflow-auto custom-scrollbar"
       >
         <Table>
           <TableHeader>
