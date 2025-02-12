@@ -85,9 +85,15 @@ export const columns: ColumnDef<Post>[] = [
       );
     },
     filterFn: (row, id, filterValues) => {
-      const categories = row.getValue(id) as Category[];
+      if (!filterValues.length) return true;
+      const rowCategories = row.getValue(id) as Category[];
+
+      const rowCategoryNames = rowCategories.map((category) =>
+        category.name.toLowerCase().replace(/\s+/g, '-')
+      );
+
       return filterValues.every((filterValue: string) =>
-        categories.some((category) => category.id === filterValue)
+        rowCategoryNames.includes(filterValue)
       );
     },
     enableSorting: false,

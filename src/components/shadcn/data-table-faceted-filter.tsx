@@ -37,7 +37,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className='hidden lg:flex'>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle />
           {title}

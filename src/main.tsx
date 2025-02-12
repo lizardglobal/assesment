@@ -21,16 +21,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const root = createRoot(document.getElementById('root')!);
 const queryClient = new QueryClient();
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="detail/:id" element={<Detail />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="detail/:id" element={<Detail />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </QueryClientProvider>
 );

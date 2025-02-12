@@ -90,7 +90,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
         onComplete: () => setIsAnimating(false),
       }
     );
-  }, [isLoading]);
+  }, []);
 
   const LoadingSkeleton = () => (
     <TableBody>
