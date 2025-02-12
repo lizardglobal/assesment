@@ -24,7 +24,7 @@ function Detail() {
     gsap.fromTo(
       cardRef.current,
       { opacity: 0, y: -50 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
     );
   }, []);
 

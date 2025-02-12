@@ -30,5 +30,5 @@ root.render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );

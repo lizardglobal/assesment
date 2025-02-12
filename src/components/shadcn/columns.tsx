@@ -89,11 +89,11 @@ export const columns: ColumnDef<Post>[] = [
       const rowCategories = row.getValue(id) as Category[];
 
       const rowCategoryNames = rowCategories.map((category) =>
-        category.name.toLowerCase().replace(/\s+/g, '-')
+        category.name.toLowerCase().replace(/\s+/g, '-'),
       );
 
       return filterValues.every((filterValue: string) =>
-        rowCategoryNames.includes(filterValue)
+        rowCategoryNames.includes(filterValue),
       );
     },
     enableSorting: false,

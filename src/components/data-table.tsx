@@ -57,7 +57,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     initialCategories.length > 0
       ? [{ id: 'categories', value: initialCategories }]
-      : []
+      : [],
   );
   // Update URL params
   useEffect(() => {
@@ -110,7 +110,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
         duration: 0.8,
         ease: 'power3.out',
         onComplete: () => setIsAnimating(false),
-      }
+      },
     );
   }, []);
 
@@ -149,7 +149,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -176,7 +176,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}
