@@ -108,6 +108,9 @@ importers:
       miragejs:
         specifier: ^0.1.41
         version: 0.1.48
+      prettier:
+        specifier: 3.5.0
+        version: 3.5.0
       typescript:
         specifier: ^5.7.3
         version: 5.7.3
@@ -1444,6 +1447,11 @@ packages:
 
   pretender@3.4.7:
     resolution: {integrity: sha512-jkPAvt1BfRi0RKamweJdEcnjkeu7Es8yix3bJ+KgBC5VpG/Ln4JE3hYN6vJym4qprm8Xo5adhWpm3HCoft1dOw==}
+
+  prettier@3.5.0:
+    resolution: {integrity: sha512-quyMrVt6svPS7CjQ9gKb3GLEX/rl3BCL2oa/QkNcXv4YNVBC9olt3s+H7ukto06q7B1Qz46PbrKLO34PR6vXcA==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   pretty-format@27.5.1:
     resolution: {integrity: sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==}
@@ -2851,6 +2859,8 @@ snapshots:
     dependencies:
       fake-xml-http-request: 2.1.2
       route-recognizer: 0.3.4
+
+  prettier@3.5.0: {}
 
   pretty-format@27.5.1:
     dependencies:

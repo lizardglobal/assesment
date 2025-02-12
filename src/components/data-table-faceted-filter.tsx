@@ -3,8 +3,8 @@ import { Column } from '@tanstack/react-table';
 import { Check, PlusCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Badge } from './badge';
-import { Button } from './button';
+import { Badge } from './shadcn/badge';
+import { Button } from './shadcn/button';
 import {
   Command,
   CommandEmpty,
@@ -13,9 +13,9 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from './command';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Separator } from './separator';
+} from './shadcn/command';
+import { Popover, PopoverContent, PopoverTrigger } from './shadcn/popover';
+import { Separator } from './shadcn/separator';
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -37,7 +37,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild className='hidden lg:flex'>
+      <PopoverTrigger asChild className="hidden lg:flex">
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle />
           {title}

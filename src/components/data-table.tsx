@@ -21,12 +21,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './table';
+} from './shadcn/table';
 
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Skeleton } from './skeleton';
+import { Skeleton } from './shadcn/skeleton';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 

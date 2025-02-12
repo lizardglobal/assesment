@@ -1,13 +1,13 @@
 import { Table } from '@tanstack/react-table';
 import { X } from 'lucide-react';
 
-import { Button } from './button';
-import { Input } from './input';
+import { Button } from './shadcn/button';
+import { Input } from './shadcn/input';
 import { DataTableViewOptions } from './data-table-view-options';
 
 import React from 'react';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
-import useCategories from '../../hooks/use-categories';
+import useCategories from '../hooks/use-categories';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

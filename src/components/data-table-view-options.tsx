@@ -2,14 +2,14 @@ import { Table } from '@tanstack/react-table';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { Settings2 } from 'lucide-react';
 
-import { Button } from './button';
+import { Button } from './shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from './dropdown-menu';
+} from './shadcn/dropdown-menu';
 import React from 'react';
 
 interface DataTableViewOptionsProps<TData> {

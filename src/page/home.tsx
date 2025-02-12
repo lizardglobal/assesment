@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataTable } from '@/components/shadcn/data-table';
+import { DataTable } from '../components/data-table';
 import { columns } from '@/components/shadcn/columns';
 import { usePosts } from '../hooks/use-posts';
 
