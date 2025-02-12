@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './select';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -23,6 +23,17 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex w-full justify-between items-center space-x-6 lg:space-x-8">
@@ -31,7 +42,9 @@ export function DataTablePagination<TData>({
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value: any) => {
-              table.setPageSize(Number(value));
+              if (isMounted) {
+                table.setPageSize(Number(value));
+              }
             }}
           >
             <SelectTrigger className="h-8 w-[70px] shadow-xs">

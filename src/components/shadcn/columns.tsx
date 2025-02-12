@@ -5,52 +5,34 @@ import { Author, Category, Post } from '@/lib/schema';
 
 export const columns: ColumnDef<Post>[] = [
   {
-    accessorKey: 'author',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Author" />
-    ),
+    accessorFn: (row) => row.author.name,
+    id: 'author',
+    header: 'Author',
     cell: ({ row }) => {
-      const author = row.getValue('author') as Author;
+      const author = row.original.author as Author;
       return <span className="flex max-w-[150px]">{author.name}</span>;
-    },
-    filterFn: (row, id, value) => {
-      const author = row.getValue(id) as Author;
-      return author.name.toLowerCase().includes(value.toLowerCase());
     },
     enableSorting: false,
   },
   {
     accessorKey: 'title',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
-    ),
+    header: 'Title',
     cell: ({ row }) => {
       return (
         <span className="flex max-w-[300px]">{row.getValue('title')}</span>
       );
     },
-    filterFn: (row, id, value) => {
-      const cellValue = row.getValue(id);
-      return (cellValue as string).toLowerCase().includes(value.toLowerCase());
-    },
-    sortingFn: 'text',
     enableSorting: false,
   },
   {
     accessorKey: 'summary',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Summary" />
-    ),
+    header: 'Summary',
     cell: ({ row }) => {
       return (
         <div className="flex max-w-[500px] items-center">
           <span>{row.getValue('summary')}</span>
         </div>
       );
-    },
-    filterFn: (row, id, value) => {
-      const cellValue = row.getValue(id);
-      return (cellValue as string).toLowerCase().includes(value.toLowerCase());
     },
     enableSorting: false,
   },
@@ -102,10 +84,10 @@ export const columns: ColumnDef<Post>[] = [
         </span>
       );
     },
-    filterFn: (row, id, value) => {
+    filterFn: (row, id, filterValues) => {
       const categories = row.getValue(id) as Category[];
-      return categories.some((category) =>
-        category.name.toLowerCase().includes(value.toLowerCase())
+      return filterValues.every((filterValue: string) =>
+        categories.some((category) => category.id === filterValue)
       );
     },
     enableSorting: false,
