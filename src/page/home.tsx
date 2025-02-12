@@ -14,7 +14,7 @@ const fetchPosts = async (): Promise<Post[]> => {
 };
 
 // Format date to dd/mm/yy because the API returns a date format that is not user-friendly.
-function formatDate(publishDate: string): string {
+export function formatDate(publishDate: string): string {
   const date = new Date(publishDate);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');

@@ -28,6 +28,8 @@ import { DataTableToolbar } from './data-table-toolbar';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Skeleton } from './skeleton';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 interface DataTableProps<TData extends { id: string | number }, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -71,6 +73,25 @@ export function DataTable<TData extends { id: string | number }, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const tableRef = useRef(null);
+  const [isAnimating, setIsAnimating] = useState(true);
+
+  useEffect(() => {
+    setIsAnimating(true); // Déclenche l'animation au début du chargement
+
+    gsap.fromTo(
+      tableRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        onComplete: () => setIsAnimating(false), // Fin de l'animation
+      }
+    );
+  }, [isLoading]);
+
   const LoadingSkeleton = () => (
     <TableBody>
       {Array.from({ length: 10 }).map((_, index) => (
@@ -91,7 +112,10 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   return (
     <div className="flex overflow-hidden flex-col gap-8 w-full p-1">
       <DataTableToolbar table={table} />
-      <div className={cn('border-border border-1 rounded-md overflow-auto')}>
+      <div
+        ref={tableRef}
+        className={cn('border-border border-1 rounded-md overflow-auto')}
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -109,7 +133,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          {isLoading ? (
+          {isAnimating || isLoading ? (
             <LoadingSkeleton />
           ) : (
             <TableBody>

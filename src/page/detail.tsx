@@ -9,11 +9,24 @@ import { Post } from '@/lib/schema';
 import { ArrowLeftIcon } from 'lucide-react';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { formatDate } from './home';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 
 function Detail() {
   const location = useLocation();
   const post: Post = location.state?.user;
   const navigate = useNavigate();
+
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      cardRef.current,
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+    );
+  }, []);
 
   const returnToHome = () => {
     navigate('/');
@@ -21,7 +34,7 @@ function Detail() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-md border p-6 w-fit">
+      <div ref={cardRef} className="rounded-md border p-6 w-fit">
         <div className="flex items-center gap-6">
           <Avatar className="w-24 h-24">
             <AvatarImage
@@ -37,7 +50,7 @@ function Detail() {
               @{post.author.name.toLowerCase().replace(' ', '_')}
             </h2>
             <p className="text-sm text-gray-600">
-              {post.publishDate}
+              {formatDate(post.publishDate)}
             </p>
           </div>
         </div>
