@@ -26,15 +26,19 @@ import {
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 import { useNavigate } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+import { Skeleton } from './skeleton';
 
 interface DataTableProps<TData extends { id: string | number }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading: boolean;
 }
 
 export function DataTable<TData extends { id: string | number }, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const navigate = useNavigate();
@@ -67,63 +71,82 @@ export function DataTable<TData extends { id: string | number }, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const LoadingSkeleton = () => (
+    <TableBody>
+      {Array.from({ length: 10 }).map((_, index) => (
+        <TableRow key={index} className="h-[100px]">
+          {columns.map((_, cellIndex) => (
+            <TableCell key={cellIndex}>
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-6 w-[95%]" />
+                <Skeleton className="h-6 w-[85%]" />
+              </div>
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+
   return (
     <div className="flex overflow-hidden flex-col gap-8 w-full p-1">
       <DataTableToolbar table={table} />
-      <div className="border-border border-1 rounded-md overflow-y-scroll">
+      <div className={cn('border-border border-1 rounded-md overflow-auto')}>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  onClick={() =>
-                    navigate(`/detail/${row.original.id}`, {
-                      state: { user: row.original },
-                    })
-                  }
-                  className="cursor-pointer"
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+          {isLoading ? (
+            <LoadingSkeleton />
+          ) : (
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    onClick={() =>
+                      navigate(`/detail/${row.original.id}`, {
+                        state: { user: row.original },
+                      })
+                    }
+                    className="cursor-pointer h-[100px]"
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+              )}
+            </TableBody>
+          )}
         </Table>
       </div>
       <DataTablePagination table={table} />

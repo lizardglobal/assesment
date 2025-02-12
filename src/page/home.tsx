@@ -1,6 +1,5 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
 import { DataTable } from '@/components/shadcn/data-table';
 import { columns } from '@/components/shadcn/columns';
 import { Post } from '@/lib/schema';
@@ -14,6 +13,15 @@ const fetchPosts = async (): Promise<Post[]> => {
   return data.posts;
 };
 
+// Format date to dd/mm/yy because the API returns a date format that is not user-friendly.
+function formatDate(publishDate: string): string {
+  const date = new Date(publishDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear()).slice(2);
+  return `${day}/${month}/${year}`;
+}
+
 function Home() {
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['posts'],
@@ -21,27 +29,11 @@ function Home() {
     select: (data) =>
       data.map((post: Post) => ({
         ...post,
-        publishDate: formatDate(post.publishDate),
+        publication: formatDate(post.publishDate),
       })),
   });
 
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = String(date.getFullYear()).slice(2);
-    return `${day}/${month}/${year}`;
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  return <DataTable columns={columns} data={posts} />;
+  return <DataTable columns={columns} data={posts} isLoading={isLoading} />;
 }
 
 export default Home;

@@ -5,27 +5,19 @@ import { Author, Category, Post } from '@/lib/schema';
 
 export const columns: ColumnDef<Post>[] = [
   {
-    accessorKey: 'id',
-    header: () => null,
-    cell: () => null,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: 'author',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Author" />
     ),
     cell: ({ row }) => {
       const author = row.getValue('author') as Author;
-      return (
-        <div className="flex max-w-[150px]">
-          <span>{author.name}</span>
-        </div>
-      );
+      return <span className="flex max-w-[150px]">{author.name}</span>;
+    },
+    filterFn: (row, id, value) => {
+      const author = row.getValue(id) as Author;
+      return author.name.toLowerCase().includes(value.toLowerCase());
     },
     enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'title',
@@ -38,10 +30,11 @@ export const columns: ColumnDef<Post>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const cellValue = row.getValue(id);
+      return (cellValue as string).toLowerCase().includes(value.toLowerCase());
     },
     sortingFn: 'text',
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     accessorKey: 'summary',
@@ -56,31 +49,40 @@ export const columns: ColumnDef<Post>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const cellValue = row.getValue(id);
+      return (cellValue as string).toLowerCase().includes(value.toLowerCase());
     },
-    sortingFn: 'text',
-    enableSorting: true,
+    enableSorting: false,
   },
   {
-    accessorKey: 'publishDate',
+    accessorKey: 'publication',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         className="md:block hidden"
-        title="Publication date"
+        title="Publication"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="md:flex items-center hidden">
-          <span>{row.getValue('publishDate')}</span>
-        </div>
+        <span className="md:flex items-center hidden">
+          {row.getValue('publication')}
+        </span>
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const cellValue = row.getValue(id);
+      return (cellValue as string).includes(value);
     },
-    sortingFn: 'text',
+    sortingFn: (rowA, rowB, columnId) => {
+      const parseDate = (dateStr: string) => {
+        const [day, month, year] = dateStr.split('/').map(Number);
+        return new Date(year, month - 1, day);
+      };
+      const dateA = parseDate(rowA.getValue(columnId) as string);
+      const dateB = parseDate(rowB.getValue(columnId) as string);
+      return dateA > dateB ? 1 : -1;
+    },
     enableSorting: true,
   },
   {
@@ -95,15 +97,17 @@ export const columns: ColumnDef<Post>[] = [
     cell: ({ row }) => {
       const categories = row.getValue('categories') as Category[];
       return (
-        <div className="lg:flex max-w-[250px] items-center hidden">
-          <span>{categories.map((cat) => cat.name).join(', ')}</span>
-        </div>
+        <span className="lg:flex max-w-[250px] items-center hidden">
+          {categories.map((cat) => cat.name).join(', ')}
+        </span>
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const categories = row.getValue(id) as Category[];
+      return categories.some((category) =>
+        category.name.toLowerCase().includes(value.toLowerCase())
+      );
     },
-    sortingFn: 'text',
-    enableSorting: true,
+    enableSorting: false,
   },
 ];

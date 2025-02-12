@@ -36,7 +36,9 @@ function Detail() {
             <h2 className="text-gray-500">
               @{post.author.name.toLowerCase().replace(' ', '_')}
             </h2>
-            <p className="text-sm text-gray-600">{post.publishDate}</p>
+            <p className="text-sm text-gray-600">
+              {post.publishDate}
+            </p>
           </div>
         </div>
         <div className="mt-6">
