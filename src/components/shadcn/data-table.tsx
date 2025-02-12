@@ -25,8 +25,7 @@ import {
 
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
-import { useNavigate } from 'react-router-dom';
-import { cn } from '@/lib/utils';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Skeleton } from './skeleton';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
@@ -46,23 +45,45 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   const navigate = useNavigate();
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get initial state from URL params (if any)
+  const initialCategories: string[] = searchParams.get('categories')
+    ? searchParams.get('categories')!.split(',')
+    : [];
+
+  // Initialize column filters state
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    initialCategories.length > 0
+      ? [{ id: 'categories', value: initialCategories }]
+      : []
+  );
+  // Update URL params
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (columnFilters.length > 0) {
+      const categoryFilter = columnFilters.find((f) => f.id === 'categories');
+      if (categoryFilter) {
+        params.set('categories', (categoryFilter.value as string[]).join(','));
+      }
+    }
+
+    setSearchParams(params);
+  }, [columnFilters, setSearchParams]);
+
+  // Initialize table
   const table = useReactTable({
     data,
     columns,
     state: {
-      sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
@@ -77,6 +98,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
   const tableRef = useRef(null);
   const [isAnimating, setIsAnimating] = useState(true);
 
+  // Fade in animation
   useEffect(() => {
     setIsAnimating(true);
     gsap.fromTo(
@@ -92,6 +114,7 @@ export function DataTable<TData extends { id: string | number }, TValue>({
     );
   }, []);
 
+  // Skeleton loader
   const LoadingSkeleton = () => (
     <TableBody>
       {Array.from({ length: 10 }).map((_, index) => (
